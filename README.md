@@ -2,6 +2,8 @@
 
 > travel matching and booking application
 
+[View Demo](http://xtravelous.robertsoriano.com/)
+
 ## Build Setup
 
 ``` bash
