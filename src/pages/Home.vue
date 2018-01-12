@@ -104,10 +104,12 @@
 <script>
   import Form from '@/components/Form'
   export default {
+    created () {
+      window.location.href = '/#/soon'
+    },
     components: {
       Form
     }
   }
-
 </script>
 

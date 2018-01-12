@@ -48,20 +48,31 @@
           this.snackbarMessage = 'Oops. All fields are required.'
           this.snackbar = true
         } else {
-          this.$refs.topProgress.start()
-          users.add(this.formData).then(res => {
-            this.$refs.topProgress.done()
-            this.snackbarMessage = 'Thank you for messaging us!'
+          if (this.validateEmail(this.formData.email)) {
+            this.$refs.topProgress.start()
+            this.formData.created_at = Date.now()
+            users.add(this.formData).then(res => {
+              this.$refs.topProgress.done()
+              this.snackbarMessage = 'Thank you for messaging us!'
+              this.snackbar = true
+              this.formData = {
+                fullName: '',
+                email: '',
+                message: ''
+              }
+            }).catch(err => {
+              this.$refs.topProgress.fail()
+            })
+          } else {
+            this.snackbarMessage = 'Oops. Invalid email address.'
             this.snackbar = true
-            this.formData = {
-              fullName: '',
-              email: '',
-              message: ''
-            }
-          }).catch(err => {
-            this.$refs.topProgress.fail()
-          })
+          }
         }
+      },
+      validateEmail(email) {
+        const re =
+          /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email)
       }
     }
   }
