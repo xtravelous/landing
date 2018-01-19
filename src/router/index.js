@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/Home'
-import Admin from '@/pages/Admin'
-import ComingSoon from '@/pages/ComingSoon'
+/* import Admin from '@/pages/Admin'
+import ComingSoon from '@/pages/ComingSoon' */
 
 Vue.use(Router)
 
@@ -16,7 +16,7 @@ export default new Router({
         layout: 'landing'
       }
     },
-    {
+/*     {
       path: '/x-admin',
       name: 'Admin',
       component: Admin,
@@ -28,6 +28,6 @@ export default new Router({
       path: '/soon',
       name: 'ComingSoon',
       component: ComingSoon
-    }
+    } */
   ]
 })
