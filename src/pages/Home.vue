@@ -58,8 +58,10 @@
 <script>
   import Form from '@/components/Form'
   export default {
-    created() {
-      //window.location.href = '/#/soon'
+    mounted() {
+      this.$events.listen('closeDialog', res => {
+        if(res) this.formDialog = false
+      })
     },
     data() {
       return {

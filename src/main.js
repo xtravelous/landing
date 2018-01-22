@@ -8,12 +8,12 @@ import 'vuetify/dist/vuetify.css'
 import 'animate.css/animate.css'
 import vueTopprogress from 'vue-top-progress'
 import { VueExtendLayout, layout } from 'vue-extend-layout'
-import VueMoment from 'vue-moment'
+import VueEvents from 'vue-events'
  
 Vue.use(Vuetify)
 Vue.use(vueTopprogress)
 Vue.use(VueExtendLayout)
-Vue.use(VueMoment)
+Vue.use(VueEvents)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

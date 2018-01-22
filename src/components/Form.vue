@@ -29,6 +29,7 @@
   import db from '@/firebaseInit'
   import SmoothScroll from 'smooth-scroll/dist/js/smooth-scroll'
   const users = db.collection('users')
+  import moment from 'moment'
   export default {
     created() {
       new SmoothScroll('a[href*="#"]', {
@@ -62,19 +63,40 @@
           if (this.validateEmail(this.formData.email)) {
             this.$refs.topProgress.start()
             this.formData.created_at = Date.now()
-            users.add(this.formData).then(res => {
-              this.$refs.topProgress.done()
-              this.snackbarMessage = 'Thank you for messaging us!'
-              this.successAlert = true
-              setTimeout(() => this.successAlert = false, 3000)
-              //this.snackbar = true
-              this.formData = {
-                fullName: '',
-                email: '',
-                //message: ''
+            users.where('email', '==', this.formData.email).get().then(querySnapshot => {
+              if (querySnapshot.empty) {
+                users.add(this.formData).then(res => {
+                  this.$refs.topProgress.done()
+                  this.snackbarMessage = 'Thank you for messaging us!'
+                  this.successAlert = true
+                  setTimeout(() => {
+                    this.successAlert = false
+                    this.$events.fire('closeDialog', true)
+                  }, 3000)
+                  //this.snackbar = true
+                  this.formData = {
+                    fullName: '',
+                    email: '',
+                    //message: ''
+                  }
+                }).catch(err => {
+                  this.$refs.topProgress.fail()
+                  this.snackbarMessage = 'An error occurred. Please try again.'
+                  this.errorAlert = true
+                  setTimeout(() => this.errorAlert = false, 2500)
+                })
+              } else {
+                const created_at = moment(querySnapshot.docs[0].data().created_at).format('MMMM D, YYYY')
+                this.$refs.topProgress.done()
+                this.snackbarMessage = `You subscribed last ${created_at} already.`
+                this.successAlert = true
+                setTimeout(() => this.successAlert = false, 5000)
               }
-            }).catch(err => {
+            }).catch(e => {
               this.$refs.topProgress.fail()
+              this.snackbarMessage = 'An error occurred. Please try again.'
+              this.errorAlert = true
+              setTimeout(() => this.errorAlert = false, 2500)
             })
           } else {
             this.snackbarMessage = 'Oops. Invalid email address.'
